@@ -716,6 +716,7 @@ public class NodeMailDAO {
 			Hibernate.initialize(nMail.getSubscriptors());
 			Hibernate.initialize(nMail.getUserPermissions());
 			Hibernate.initialize(nMail.getRolePermissions());
+			Hibernate.initialize(nMail.getProperties());
 		}
 	}
 

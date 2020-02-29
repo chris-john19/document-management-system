@@ -787,9 +787,10 @@ public class NodeFolderDAO {
 			Hibernate.initialize(nFolder);
 			Hibernate.initialize(nFolder.getKeywords());
 			Hibernate.initialize(nFolder.getCategories());
-			Hibernate.initialize(nFolder.getSubscriptors());
+			Hibernate.initialize(nFolder.getSubscriptors());			
 			Hibernate.initialize(nFolder.getUserPermissions());
 			Hibernate.initialize(nFolder.getRolePermissions());
+			Hibernate.initialize(nFolder.getProperties());
 		}
 	}
 

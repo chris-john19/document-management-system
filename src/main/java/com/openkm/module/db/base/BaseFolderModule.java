@@ -72,10 +72,14 @@ public class BaseFolderModule {
 		folderNode.setKeywords(CloneUtils.clone(keywords));
 		folderNode.setCategories(CloneUtils.clone(categories));
 
-		for (NodeProperty nProp : CloneUtils.clone(propertyGroups)) {
-			nProp.setNode(folderNode);
-			folderNode.getProperties().add(nProp);
-		}
+		for (NodeProperty nProp : propertyGroups) {
+            NodeProperty nPropClone = new NodeProperty();
+            nPropClone.setNode(folderNode);
+            nPropClone.setName(nProp.getName());
+            nPropClone.setGroup(nProp.getGroup());
+            nPropClone.setValue(nProp.getValue());
+            folderNode.getProperties().add(nPropClone);
+        }
 
 		// Get parent node auth info
 		Map<String, Integer> userPerms = parentFolder.getUserPermissions();
