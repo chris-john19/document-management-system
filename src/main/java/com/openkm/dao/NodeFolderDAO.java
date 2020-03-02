@@ -170,10 +170,10 @@ public class NodeFolderDAO {
 			HibernateUtil.close(session);
 		}
 	}
-
-	/**
-	 * Find by pk
-	 */
+   
+    /**
+     * Find by pk
+     */
 	public NodeFolder findByPk(String uuid) throws PathNotFoundException, DatabaseException {
 		log.debug("findByPk({})", uuid);
 		String qs = "from NodeFolder nf where nf.uuid=:uuid";
@@ -780,9 +780,16 @@ public class NodeFolderDAO {
 	}
 
 	/**
+     * Force initialization of a proxy
+     */
+    public void initialize(NodeFolder nFolder) {
+        initialize(nFolder, true);
+    }
+    
+	/**
 	 * Force initialization of a proxy
 	 */
-	public void initialize(NodeFolder nFolder) {
+	public void initialize(NodeFolder nFolder, boolean initPropGroups) {
 		if (nFolder != null) {
 			Hibernate.initialize(nFolder);
 			Hibernate.initialize(nFolder.getKeywords());
@@ -790,7 +797,10 @@ public class NodeFolderDAO {
 			Hibernate.initialize(nFolder.getSubscriptors());			
 			Hibernate.initialize(nFolder.getUserPermissions());
 			Hibernate.initialize(nFolder.getRolePermissions());
-			Hibernate.initialize(nFolder.getProperties());
+			
+            if (initPropGroups) {
+                Hibernate.initialize(nFolder.getProperties());
+            }
 		}
 	}
 

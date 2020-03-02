@@ -1717,7 +1717,6 @@ public class NodeDocumentDAO {
 			Hibernate.initialize(nDocument.getSubscriptors());
 			Hibernate.initialize(nDocument.getUserPermissions());
 			Hibernate.initialize(nDocument.getRolePermissions());
-			Hibernate.initialize(nDocument.getProperties());
 			
 			if (initPropGroups) {
 				Hibernate.initialize(nDocument.getProperties());
@@ -1730,7 +1729,7 @@ public class NodeDocumentDAO {
 	 */
 	private void initialize(List<NodeDocument> nDocumentList) {
 		for (NodeDocument nDocument : nDocumentList) {
-			initialize(nDocument, false);
+			initialize(nDocument, true);
 		}
 	}
 

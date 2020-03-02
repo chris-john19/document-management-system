@@ -538,7 +538,7 @@ public class SearchDAO {
 			NodeFolderDAO.getInstance().initialize(qr.getFolder());
 			results.add(qr);
 		} else if (qr.getMail() != null) {
-			NodeMailDAO.getInstance().initialize(qr.getMail());
+			NodeMailDAO.getInstance().initialize(qr.getMail(), false);
 			results.add(qr);
 		} else if (qr.getAttachment() != null) {
 			NodeDocumentDAO.getInstance().initialize(qr.getAttachment(), false);

@@ -156,10 +156,17 @@ public class NodeMailDAO {
 	}
 
 	/**
-	 * Find by path
+     * Find by pk
+     */
+    public NodeMail findByPk(String uuid) throws DatabaseException, PathNotFoundException {
+        return findByPk(uuid, false);
+    }
+    
+	/**
+	 * Find by pk and optionally initialize node property groups
 	 */
-	public NodeMail findByPk(String uuid) throws PathNotFoundException, DatabaseException {
-		log.debug("findByPk({})", uuid);
+	public NodeMail findByPk(String uuid, boolean initPropGroups) throws PathNotFoundException, DatabaseException {
+	    log.debug("findByPk({}, {})", uuid, initPropGroups);
 		String qs = "from NodeMail nm where nm.uuid=:uuid";
 		Session session = null;
 
@@ -176,7 +183,7 @@ public class NodeMailDAO {
 			// Security Check
 			SecurityHelper.checkRead(nMail);
 
-			initialize(nMail);
+			initialize(nMail, initPropGroups);
 			log.debug("findByPk: {}", nMail);
 			return nMail;
 		} catch (HibernateException e) {
@@ -426,7 +433,7 @@ public class NodeMailDAO {
 			}
 
 			session.update(nMail);
-			initialize(nMail);
+			initialize(nMail, false);
 			HibernateUtil.commit(tx);
 			log.debug("rename: {}", nMail);
 			return nMail;
@@ -704,7 +711,7 @@ public class NodeMailDAO {
 	/**
 	 * Force initialization of a proxy
 	 */
-	public void initialize(NodeMail nMail) {
+	public void initialize(NodeMail nMail, boolean initPropGroups) {
 		if (nMail != null) {
 			Hibernate.initialize(nMail);
 			Hibernate.initialize(nMail.getTo());
@@ -716,7 +723,10 @@ public class NodeMailDAO {
 			Hibernate.initialize(nMail.getSubscriptors());
 			Hibernate.initialize(nMail.getUserPermissions());
 			Hibernate.initialize(nMail.getRolePermissions());
-			Hibernate.initialize(nMail.getProperties());
+			
+			if (initPropGroups) {
+                Hibernate.initialize(nMail.getProperties());
+            }
 		}
 	}
 
@@ -725,7 +735,7 @@ public class NodeMailDAO {
 	 */
 	private void initialize(List<NodeMail> nMailList) {
 		for (NodeMail nMail : nMailList) {
-			initialize(nMail);
+			initialize(nMail, true);
 		}
 	}
 }
