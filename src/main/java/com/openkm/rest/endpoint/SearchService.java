@@ -139,6 +139,36 @@ public class SearchService {
 	}
 
 	@GET
+	@Path("/findByQuery")
+	public QueryResultList findByQuery(@QueryParam("query") String query) throws GenericException {
+		try {
+			log.debug("findByQuery({})", query);
+			SearchModule sm = ModuleManager.getSearchModule();
+			QueryResultList qrl = new QueryResultList();
+			qrl.getList().addAll(sm.findByQuery(null, query));
+			log.debug("findByQuery: {}", qrl);
+			return qrl;
+		} catch (Exception e) {
+			throw new GenericException(e);
+		}
+	}
+
+	@GET
+	@Path("/findByQueryPaginated")
+	public ResultSet findByQueryPaginated(@DefaultValue("0") @QueryParam("offset") int offset, @DefaultValue("10") @QueryParam("limit") int limit,
+	                                      @QueryParam("query") String query) throws GenericException {
+		try {
+			log.debug("findByQueryPaginated({})", query);
+			SearchModule sm = ModuleManager.getSearchModule();
+			ResultSet rs = sm.findByQueryPaginated(null, query, offset, limit);
+			log.debug("findByQueryPaginated: {}", rs);
+			return rs;
+		} catch (Exception e) {
+			throw new GenericException(e);
+		}
+	}
+
+	@GET
 	@Path("/findSimpleQueryPaginated")
 	// Default "domain" is "1" for documents.
 	public ResultSet findSimpleQueryPaginated(@DefaultValue("0") @QueryParam("offset") int offset,
